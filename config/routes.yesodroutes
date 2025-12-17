@@ -12,3 +12,15 @@
 /comments CommentR POST
 
 /profile ProfileR GET
+
+/register RegisterR GET POST
+
+/ranked-votes RankedVoteR:
+    /list ListR GET
+    /create CreateR GET POST
+    /view/#RankedVoteListId ViewR GET
+    /participate/#RankedVoteListId ParticipateR GET POST
+    /add-item/#RankedVoteListId AddItemR POST
+    /close/#RankedVoteListId CloseR POST
+    /results/#RankedVoteListId ResultsR GET
+    /update-order UpdateOrderR POST

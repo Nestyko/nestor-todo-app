@@ -1,0 +1,46 @@
+<div .row>
+    <div .col-md-12>
+        <h1>Ranked Vote Results
+        <h2>#{rankedVoteListTitle list}
+        $maybe desc <- rankedVoteListDescription list
+            <p>#{desc}
+
+        <h2>Final Ranking (Borda Count)
+        $if null finalRanking
+            <p .text-muted>No votes submitted yet.
+        $else
+            <ol .list-group>
+                $forall (Entity itemId item, points) <- finalRanking
+                    <li .list-group-item>
+                        <strong>#{rankedVoteItemText item}</strong>
+                        <span .badge>#{show points} points
+
+        $if isOwner
+            <h2>Individual Submissions
+            $if null individualSubmissions
+                <p .text-muted>No submissions yet.
+            $else
+                $forall (muser, orderedItems) <- individualSubmissions
+                    <div .panel.panel-default style="margin-top: 20px;">
+                        <div .panel-heading>
+                            $maybe (Entity userId user) <- muser
+                                <strong>#{userIdent user}
+                            $nothing
+                                <strong>User ID: #{show userId}
+                        <div .panel-body>
+                            <ol>
+                                $forall (itemId, mitem) <- orderedItems
+                                    $maybe item <- mitem
+                                        <li>#{rankedVoteItemText item}
+        $else
+            <h2>Your Vote
+            $if null userOrderedItems
+                <p .text-muted>You haven't submitted a vote yet.
+            $else
+                    <ol>
+                        $forall itemId <- userOrderedItems
+                            $maybe item <- Map.lookup itemId itemMap
+                                <li>#{rankedVoteItemText item}
+
+        <a href="@{RankedVoteR $ ViewR listId}" .btn.btn-default>Back to Vote
+

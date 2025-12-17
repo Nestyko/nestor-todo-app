@@ -16,3 +16,37 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
     userId UserId Maybe
     deriving Eq
     deriving Show
+
+RankedVoteList
+    owner UserId
+    title Text
+    description Text Maybe
+    status Text -- "Open" or "Closed"
+    created UTCTime
+    UniqueRankedVoteListTitle owner title
+    deriving Eq
+    deriving Show
+
+RankedVoteItem
+    rankedVoteListId RankedVoteListId
+    text Text
+    createdBy UserId
+    created UTCTime
+    deriving Eq
+    deriving Show
+
+RankedVoteSubmission
+    userId UserId
+    rankedVoteListId RankedVoteListId
+    submitted UTCTime
+    UniqueRankedVoteSubmission userId rankedVoteListId
+    deriving Eq
+    deriving Show
+
+RankedVoteItemOrder
+    submissionId RankedVoteSubmissionId
+    itemId RankedVoteItemId
+    position Int
+    UniqueRankedVoteItemOrder submissionId itemId
+    deriving Eq
+    deriving Show

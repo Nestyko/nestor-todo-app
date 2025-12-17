@@ -1,0 +1,9 @@
+<div .row>
+    <div .col-md-8.col-md-offset-2>
+        <h1>Create Ranked Vote
+        <form method="post" action="@{RankedVoteR CreateR}" enctype="#{formEnctype}">
+            ^{formWidget}
+            <div .form-group>
+                <button type="submit" .btn.btn-primary>Create Ranked Vote
+            <a href="@{RankedVoteR ListR}" .btn.btn-default>Cancel
+

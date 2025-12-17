@@ -1,0 +1,40 @@
+<div .row>
+    <div .col-md-12>
+        <h1>#{rankedVoteListTitle list}
+        $maybe desc <- rankedVoteListDescription list
+            <p>#{desc}
+        <p>
+            <strong>Status:</strong> #{rankedVoteListStatus list}
+        
+        $if isOwner
+            $if isOpen
+                <a href="@{RankedVoteR $ CloseR listId}" .btn.btn-danger>Close Poll
+        $else
+            $if isOpen
+                <a href="@{RankedVoteR $ ParticipateR listId}" .btn.btn-primary>Participate / Edit Vote
+            $else
+                <a href="@{RankedVoteR $ ResultsR listId}" .btn.btn-primary>View Results
+
+        <h2>Items
+        $if null items
+            <p .text-muted>No items yet. Add one below.
+        $else
+            <ul .list-group>
+                $forall Entity itemId item <- items
+                    <li .list-group-item>#{rankedVoteItemText item}
+
+        $if isOpen
+            <h3>Add Item
+            <form method="post" action="@{RankedVoteR $ AddItemR listId}">
+                <div .form-group>
+                    <input type="text" name="addItemText" .form-control placeholder="Enter item text" required>
+                <div .form-group>
+                    <button type="submit" .btn.btn-success>Add Item
+
+        $if isOwner && not (null allSubmissions)
+            <h2>Submissions (#{length allSubmissions})
+            <ul .list-group>
+                $forall Entity subId submission <- allSubmissions
+                    <li .list-group-item>
+                        Submission from user ID: #{show $ rankedVoteSubmissionUserId submission}
+

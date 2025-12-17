@@ -1,0 +1,102 @@
+<div .row>
+    <div .col-md-10.col-md-offset-1>
+        <h1>Participate in Ranked Vote
+        <p>Drag and drop items to rank them in order of preference (top = most preferred)
+
+        <form method="post" action="@{RankedVoteR $ ParticipateR listId}" id="vote-form">
+            <ul #item-list .list-group style="min-height: 200px;">
+                $forall Entity itemId item <- items
+                    <li .list-group-item data-item-id="#{show itemId}" style="cursor: move; margin-bottom: 5px; user-select: none;">
+                        <span .glyphicon.glyphicon-menu-hamburger style="margin-right: 10px;">
+                        #{rankedVoteItemText item}
+                        <input type="hidden" name="item_ids[]" value="#{show itemId}">
+            
+            <div .form-group style="margin-top: 20px;">
+                <button type="submit" .btn.btn-primary>Submit Vote
+                <a href="@{RankedVoteR $ ViewR listId}" .btn.btn-default>Cancel
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
+<script>
+    $(function() {
+        var itemList = $('#item-list');
+        
+        // Make items sortable using HTML5 drag and drop
+        var draggedElement = null;
+        
+        itemList.find('li').each(function() {
+            this.draggable = true;
+            $(this).attr('draggable', 'true');
+            
+            $(this).on('dragstart', function(e) {
+                draggedElement = this;
+                $(this).addClass('dragging');
+                e.originalEvent.dataTransfer.effectAllowed = 'move';
+            });
+            
+            $(this).on('dragend', function() {
+                $(this).removeClass('dragging');
+            });
+            
+            $(this).on('dragover', function(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+                if (draggedElement && this !== draggedElement) {
+                    var allItems = itemList.find('li');
+                    var draggedIndex = allItems.index(draggedElement);
+                    var targetIndex = allItems.index(this);
+                    
+                    if (draggedIndex < targetIndex) {
+                        $(this).after(draggedElement);
+                    } else {
+                        $(this).before(draggedElement);
+                    }
+                }
+                return false;
+            });
+            
+            $(this).on('drop', function(e) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                
+                // Update hidden input values
+                updateItemOrder();
+                
+                // Send AJAX update
+                var itemIds = [];
+                itemList.find('li').each(function() {
+                    itemIds.push($(this).data('item-id'));
+                });
+                
+                $.ajax({
+                    url: '@{RankedVoteR UpdateOrderR}',
+                    method: 'POST',
+                    data: {
+                        list_id: '#{show listId}',
+                        'item_ids[]': itemIds
+                    },
+                    success: function(data) {
+                        console.log('Order updated');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error updating order:', error);
+                    }
+                });
+                
+                return false;
+            });
+        });
+        
+        function updateItemOrder() {
+            itemList.find('li').each(function(index) {
+                $(this).find('input[type="hidden"]').val($(this).data('item-id'));
+            });
+        }
+        
+        // Initialize order
+        updateItemOrder();
+    });
+

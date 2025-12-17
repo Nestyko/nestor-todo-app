@@ -1,8 +1,23 @@
 
+<!-- Sidebar -->
+<div #sidebar .sidebar :isJust muser:>
+    <div .sidebar-header>
+        <h3>Features
+    <ul .sidebar-menu>
+        $maybe (_, user) <- muser
+            <li>
+                <a href="@{RankedVoteR ListR}">Ranked Vote
+
+<!-- Overlay for mobile -->
+<div #sidebar-overlay .sidebar-overlay :isJust muser:>
+
 <!-- Static navbar -->
 <nav .navbar.navbar-default.navbar-static-top>
     <div .container>
         <div .navbar-header>
+            $maybe _ <- muser
+                <button type="button" #sidebar-toggle .btn.btn-default.navbar-btn>
+                    <span .glyphicon.glyphicon-menu-hamburger>
             <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation
                 <span class="icon-bar">
@@ -22,6 +37,7 @@
 
 <!-- Page Contents -->
 
+<div .main-content :isJust muser:>
 <div .container>
     $if not $ Just HomeR == mcurrentRoute
         <ul .breadcrumb>
@@ -38,13 +54,12 @@
 $if (Just HomeR == mcurrentRoute)
     ^{widget}
 $else
-    <div .container>
-        <div .row>
-            <div .col-md-12>
-                ^{widget}
+    ^{widget}
 
 <!-- Footer -->
 <footer .footer>
     <div .container>
         <p .text-muted>
             #{appCopyright $ appSettings master}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js">

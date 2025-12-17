@@ -1,0 +1,34 @@
+<div .row>
+    <div .col-md-12>
+        <h1>Ranked Votes
+        <p>
+            <a href="@{RankedVoteR CreateR}" .btn.btn-primary>Create New Ranked Vote
+
+        <h2>My Created Votes
+        $if null myLists
+            <p .text-muted>You haven't created any ranked votes yet.
+        $else
+            <ul .list-group>
+                $forall Entity listId list <- myLists
+                    <li .list-group-item>
+                        <h4>
+                            <a href="@{RankedVoteR $ ViewR listId}">#{rankedVoteListTitle list}
+                        <p .text-muted>
+                            Status: #{rankedVoteListStatus list}
+                            $maybe desc <- rankedVoteListDescription list
+                                <br>#{desc}
+
+        <h2>Votes I've Participated In
+        $if null participatedLists
+            <p .text-muted>You haven't participated in any ranked votes yet.
+        $else
+            <ul .list-group>
+                $forall Entity listId list <- participatedLists
+                    <li .list-group-item>
+                        <h4>
+                            <a href="@{RankedVoteR $ ViewR listId}">#{rankedVoteListTitle list}
+                        <p .text-muted>
+                            Status: #{rankedVoteListStatus list}
+                            $maybe desc <- rankedVoteListDescription list
+                                <br>#{desc}
+

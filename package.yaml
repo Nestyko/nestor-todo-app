@@ -7,6 +7,7 @@ dependencies:
 - yesod >=1.6 && <1.7
 - yesod-core >=1.6 && <1.7
 - yesod-auth >=1.6 && <1.7
+- bcrypt >=0.0 && <0.1
 - yesod-static >=1.6 && <1.7
 - yesod-form >=1.6 && <1.8
 - classy-prelude >=1.5 && <1.6
