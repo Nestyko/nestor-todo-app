@@ -26,3 +26,6 @@ getListR = do
         setTitle "Ranked Votes"
         $(widgetFile "ranked-vote/list")
 
+
+
+

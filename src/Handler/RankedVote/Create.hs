@@ -50,3 +50,6 @@ postCreateR = do
                 setTitle "Create Ranked Vote"
                 $(widgetFile "ranked-vote/create")
 
+
+
+
