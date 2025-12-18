@@ -33,3 +33,6 @@ getViewR listId = do
                 setTitle $ toHtml $ rankedVoteListTitle list
                 $(widgetFile "ranked-vote/view")
 
+
+
+

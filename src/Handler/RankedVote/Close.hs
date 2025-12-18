@@ -28,3 +28,6 @@ postCloseR listId = do
                         setMessage "Poll closed! Results are now available."
                         redirect $ RankedVoteR $ ResultsR listId
 
+
+
+
