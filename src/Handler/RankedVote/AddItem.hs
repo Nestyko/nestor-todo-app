@@ -15,12 +15,11 @@ data AddItemForm = AddItemForm
 
 addItemForm :: Form AddItemForm
 addItemForm = renderBootstrap3 BootstrapBasicForm $ AddItemForm
-    <$> areq textField (FieldSettings "Item" Nothing Nothing [("class", "form-control"), ("placeholder", "Enter item text")]) Nothing
+    <$> areq textField (FieldSettings { fsLabel = "Item", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control"), ("placeholder", "Enter item text")] }) Nothing
 
 postAddItemR :: RankedVoteListId -> Handler Html
 postAddItemR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of

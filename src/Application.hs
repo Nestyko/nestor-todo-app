@@ -44,6 +44,15 @@ import Handler.Common
 import Handler.Home
 import Handler.Comment
 import Handler.Profile
+import Handler.Register
+import Handler.RankedVote.Create
+import Handler.RankedVote.List
+import Handler.RankedVote.View
+import Handler.RankedVote.AddItem
+import Handler.RankedVote.Participate
+import Handler.RankedVote.UpdateOrder
+import Handler.RankedVote.Close
+import Handler.RankedVote.Results
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the

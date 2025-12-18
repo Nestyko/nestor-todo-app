@@ -10,8 +10,7 @@ import Data.Time (getCurrentTime)
 
 getParticipateR :: RankedVoteListId -> Handler Html
 getParticipateR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of
@@ -39,8 +38,7 @@ getParticipateR listId = do
 
 postParticipateR :: RankedVoteListId -> Handler Html
 postParticipateR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of
@@ -79,11 +77,12 @@ postParticipateR listId = do
                             
                             -- Insert new orders
                             forM_ (zip itemIdTexts [1..]) $ \(itemId, position) -> do
-                                runDB $ insert RankedVoteItemOrder
+                                _ <- runDB $ insert RankedVoteItemOrder
                                     { rankedVoteItemOrderSubmissionId = subId
                                     , rankedVoteItemOrderItemId = itemId
                                     , rankedVoteItemOrderPosition = position
                                     }
+                                return ()
                             
                             setMessage "Your vote has been submitted!"
                             redirect $ RankedVoteR $ ViewR listId

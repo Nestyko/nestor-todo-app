@@ -9,8 +9,7 @@ import Import
 
 postCloseR :: RankedVoteListId -> Handler Html
 postCloseR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of

@@ -9,8 +9,7 @@ import Import
 
 getListR :: Handler Html
 getListR = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     -- Get lists created by user
     myLists <- runDB $ selectList [RankedVoteListOwner ==. userId] [Desc RankedVoteListCreated]
