@@ -6,7 +6,6 @@
 module Handler.Register where
 
 import Import
-import qualified Data.Text.Encoding as TE
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 
 data RegisterForm = RegisterForm
@@ -59,12 +58,12 @@ postRegisterR = do
                             -- TEMPORARY: Store password as plain text for now
                             -- In production, use proper bcrypt hashing
                             -- For yesod-auth 1.6, consider using yesod-auth-email package
-                            userId <- runDB $ insert User
+                            _userId <- runDB $ insert User
                                 { userIdent = email
                                 , userPassword = Just password  -- TEMPORARY: Use proper hashing
                                 }
                             setMessage "Registration successful! Please login."
-                            redirect $ AuthR $ PluginR "email" ["login"]
+                            redirect $ AuthR LoginR
         _ -> do
             setMessage "Please fix the errors below"
             defaultLayout $ do
