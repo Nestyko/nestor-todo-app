@@ -7,7 +7,7 @@ module Handler.RankedVote.Results where
 
 import Import
 import qualified Data.Map as Map
-import Data.List (sortBy)
+import qualified Data.List as List
 import Data.Ord (comparing)
 
 -- Calculate Borda Count ranking
@@ -27,7 +27,7 @@ calculateBordaRanking items submissionOrders =
                 ) acc itemOrderList
         
         -- Convert to list and sort by points descending
-        ranked = sortBy (flip $ comparing snd) $ Map.toList itemPoints
+        ranked = List.sortBy (flip $ comparing snd) $ Map.toList itemPoints
     in mapMaybe (\(itemId, points) -> 
         case Map.lookup itemId itemMap of
             Just item -> Just (Entity itemId item, points)
@@ -36,8 +36,7 @@ calculateBordaRanking items submissionOrders =
 
 getResultsR :: RankedVoteListId -> Handler Html
 getResultsR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of

@@ -11,8 +11,7 @@ import qualified Data.Aeson as A
 
 postUpdateOrderR :: Handler Value
 postUpdateOrderR = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     listIdText <- lookupPostParam "list_id"
     itemIds <- lookupPostParams "item_ids[]"
@@ -47,11 +46,12 @@ postUpdateOrderR = do
                                     
                                     -- Insert new orders
                                     forM_ (zip itemIdTexts [1..]) $ \(itemId, position) -> do
-                                        runDB $ insert RankedVoteItemOrder
+                                        _ <- runDB $ insert RankedVoteItemOrder
                                             { rankedVoteItemOrderSubmissionId = subId
                                             , rankedVoteItemOrderItemId = itemId
                                             , rankedVoteItemOrderPosition = position
                                             }
+                                        return ()
                                     
                                     return $ object ["success" .= True]
                         Nothing -> return $ object ["error" .= ("Poll not found" :: Text)]

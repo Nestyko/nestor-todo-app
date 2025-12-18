@@ -1,15 +1,17 @@
 
 <!-- Sidebar -->
-<div #sidebar .sidebar :isJust muser:>
-    <div .sidebar-header>
-        <h3>Features
-    <ul .sidebar-menu>
-        $maybe (_, user) <- muser
-            <li>
-                <a href="@{RankedVoteR ListR}">Ranked Vote
+$maybe _ <- muser
+    <div #sidebar .sidebar>
+        <div .sidebar-header>
+            <h3>Features
+        <ul .sidebar-menu>
+            $maybe (_, user) <- muser
+                <li>
+                    <a href="@{RankedVoteR ListR}">Ranked Vote
 
 <!-- Overlay for mobile -->
-<div #sidebar-overlay .sidebar-overlay :isJust muser:>
+$maybe _ <- muser
+    <div #sidebar-overlay .sidebar-overlay>
 
 <!-- Static navbar -->
 <nav .navbar.navbar-default.navbar-static-top>
@@ -27,34 +29,43 @@
         <div #navbar .collapse.navbar-collapse>
             <ul .nav.navbar-nav>
                 $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
+                    $if Just route == mcurrentRoute
+                        <li .active>
+                            <a href="@{route}">#{label}
+                    $else
+                        <li>
+                            <a href="@{route}">#{label}
 
             <ul .nav.navbar-nav.navbar-right>
                 $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
+                    $if Just route == mcurrentRoute
+                        <li .active>
+                            <a href="@{route}">#{label}
+                    $else
+                        <li>
+                            <a href="@{route}">#{label}
 
 <!-- Page Contents -->
 
-<div .main-content :isJust muser:>
-<div .container>
-    $if not $ Just HomeR == mcurrentRoute
-        <ul .breadcrumb>
-            $forall bc <- parents
-                <li>
-                    <a href="@{fst bc}">#{snd bc}
+$maybe _ <- muser
+    <div .main-content>
+        <div .container>
+            $if not $ Just HomeR == mcurrentRoute
+                <ul .breadcrumb>
+                    $forall bc <- parents
+                        <li>
+                            <a href="@{fst bc}">#{snd bc}
 
-            <li .active>#{title}
+                    <li .active>#{title}
 
-    $maybe msg <- mmsg
-      <div .alert.alert-info #message>#{msg}
+            $maybe msg <- mmsg
+              <div .alert.alert-info #message>#{msg}
 
 
-$if (Just HomeR == mcurrentRoute)
-    ^{widget}
-$else
-    ^{widget}
+            $if (Just HomeR == mcurrentRoute)
+                ^{widget}
+            $else
+                ^{widget}
 
 <!-- Footer -->
 <footer .footer>

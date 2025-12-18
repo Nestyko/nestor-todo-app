@@ -9,8 +9,7 @@ import Import
 
 getViewR :: RankedVoteListId -> Handler Html
 getViewR listId = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     
     mlist <- runDB $ get listId
     case mlist of

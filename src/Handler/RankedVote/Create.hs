@@ -15,9 +15,10 @@ data RankedVoteForm = RankedVoteForm
     }
 
 rankedVoteForm :: Form RankedVoteForm
-rankedVoteForm = renderBootstrap3 BootstrapBasicForm $ RankedVoteForm
-    <$> areq textField (FieldSettings "Title" Nothing Nothing [("class", "form-control"), ("placeholder", "Enter vote title")]) Nothing
-    <*> aopt textareaField (FieldSettings "Description" Nothing Nothing [("class", "form-control"), ("placeholder", "Optional description")]) Nothing
+rankedVoteForm = renderBootstrap3 BootstrapBasicForm $ 
+    RankedVoteForm
+        <$> areq textField (FieldSettings { fsLabel = "Title", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control"), ("placeholder", "Enter vote title")] }) Nothing
+        <*> aopt textField (FieldSettings { fsLabel = "Description", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control"), ("placeholder", "Optional description"), ("rows", "3")] }) Nothing
 
 getCreateR :: Handler Html
 getCreateR = do
@@ -29,8 +30,7 @@ getCreateR = do
 
 postCreateR :: Handler Html
 postCreateR = do
-    (_, user) <- requireAuthPair
-    userId <- return $ entityKey user
+    userId <- requireAuthId
     ((result, formWidget), formEnctype) <- runFormPost rankedVoteForm
     case result of
         FormSuccess form -> do

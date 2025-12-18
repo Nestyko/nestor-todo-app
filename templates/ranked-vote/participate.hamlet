@@ -18,27 +18,27 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
 <script>
-    $(function() {
-        var itemList = $('#item-list');
+    \$(function() {
+        var itemList = \$('#item-list');
         
         // Make items sortable using HTML5 drag and drop
         var draggedElement = null;
         
         itemList.find('li').each(function() {
             this.draggable = true;
-            $(this).attr('draggable', 'true');
+            \$(this).attr('draggable', 'true');
             
-            $(this).on('dragstart', function(e) {
+            \$(this).on('dragstart', function(e) {
                 draggedElement = this;
-                $(this).addClass('dragging');
+                \$(this).addClass('dragging');
                 e.originalEvent.dataTransfer.effectAllowed = 'move';
             });
             
-            $(this).on('dragend', function() {
-                $(this).removeClass('dragging');
+            \$(this).on('dragend', function() {
+                \$(this).removeClass('dragging');
             });
             
-            $(this).on('dragover', function(e) {
+            \$(this).on('dragover', function(e) {
                 if (e.preventDefault) {
                     e.preventDefault();
                 }
@@ -49,15 +49,15 @@
                     var targetIndex = allItems.index(this);
                     
                     if (draggedIndex < targetIndex) {
-                        $(this).after(draggedElement);
+                        \$(this).after(draggedElement);
                     } else {
-                        $(this).before(draggedElement);
+                        \$(this).before(draggedElement);
                     }
                 }
                 return false;
             });
             
-            $(this).on('drop', function(e) {
+            \$(this).on('drop', function(e) {
                 if (e.stopPropagation) {
                     e.stopPropagation();
                 }
@@ -68,10 +68,10 @@
                 // Send AJAX update
                 var itemIds = [];
                 itemList.find('li').each(function() {
-                    itemIds.push($(this).data('item-id'));
+                    itemIds.push(\$(this).data('item-id'));
                 });
                 
-                $.ajax({
+                \$.ajax({
                     url: '@{RankedVoteR UpdateOrderR}',
                     method: 'POST',
                     data: {
@@ -92,7 +92,7 @@
         
         function updateItemOrder() {
             itemList.find('li').each(function(index) {
-                $(this).find('input[type="hidden"]').val($(this).data('item-id'));
+                \$(this).find('input[type="hidden"]').val(\$(this).data('item-id'));
             });
         }
         

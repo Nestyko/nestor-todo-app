@@ -17,9 +17,9 @@ data RegisterForm = RegisterForm
 
 registerForm :: Form RegisterForm
 registerForm = renderBootstrap3 BootstrapBasicForm $ RegisterForm
-    <$> areq emailField (FieldSettings "Email" Nothing Nothing [("class", "form-control"), ("placeholder", "your@email.com")]) Nothing
-    <*> areq passwordField (FieldSettings "Password" Nothing Nothing [("class", "form-control")]) Nothing
-    <*> areq passwordField (FieldSettings "Confirm Password" Nothing Nothing [("class", "form-control")]) Nothing
+    <$> areq emailField (FieldSettings { fsLabel = "Email", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control"), ("placeholder", "your@email.com")] }) Nothing
+    <*> areq passwordField (FieldSettings { fsLabel = "Password", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control")] }) Nothing
+    <*> areq passwordField (FieldSettings { fsLabel = "Confirm Password", fsTooltip = Nothing, fsId = Nothing, fsName = Nothing, fsAttrs = [("class", "form-control")] }) Nothing
 
 getRegisterR :: Handler Html
 getRegisterR = do
